@@ -62,29 +62,29 @@ Download data from [GTDB](https://gtdb.ecogenomic.org)
 (<100M RAM, a few minutes run time)
 
 ```
-msp mykrobe_from_gtdb GTDB_data
+sprog mykrobe_from_gtdb GTDB_data
 ```
 
 Download genomes (<100M RAM, approx 30 minutes to run depending on bandwidth)
 
 ```
-msp get_data Samples GTDB_data/manifest.tsv
+sprog get_data Samples GTDB_data/manifest.tsv
 ```
 
 Build graph of all samples and extract unitigs (17GB RAM, 1h wall clock)
 
 ```
-msp build_all_samples_unitigs --threads 30 Samples
+sprog build_all_samples_unitigs --threads 30 Samples
 ```
 
 Assign unitigs to each species (3GB RAM, 6h wall clock)
 
 ```
-msp per_sample_presence --threads 30 Samples
+sprog per_sample_presence --threads 30 Samples
 ```
 
 Make mykrobe probes (3GB RAM, 20m run time)
 
 ```
-msp make_probes --mykrobe_tb Samples GTDB_data/tree.tsv
+sprog make_probes --mykrobe_tb Samples GTDB_data/tree.tsv
 ```
