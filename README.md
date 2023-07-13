@@ -11,7 +11,9 @@ are unique to each node in the tree.
 [mykrobe](https://github.com/Mykrobe-tools/mykrobe). However, the method
 is not specific to mykrobe and can be used more generally for any species.
 
-The method relies heavily on `Bifrost`. Unitigs are generated from a graph
+The method relies heavily on
+[`Bifrost`](https://github.com/pmelsted/bifrost).
+Unitigs are generated from a graph
 of all the input genomes. Then the presence of these unitigs in each
 species is determined
 (where there is more than one genome for a species, a unitig
@@ -21,10 +23,10 @@ a set of sequences that are unique to node in the tree, in FASTA format.
 
 ## Installation
 
-`sprog` is written in Python. It assumes
-[`Bifrost`](https://github.com/pmelsted/bifrost) is installed.
+`sprog` is written in Python. It assumes `Bifrost` is installed and in your
+`$PATH`.
 
-Install by taking a copy of this repo and running:
+Install `sporg` by taking a copy of this repo and running:
 ```
 python3 -m pip install .
 ```
