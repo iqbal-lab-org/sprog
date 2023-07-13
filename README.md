@@ -8,7 +8,7 @@ taxonomy for the species, and `sprog` can make a set of sequence probes that
 are unique to each node in the tree.
 
 `sprog` was developed to generate Mycobacterium probes for
-[mykrobe][https://github.com/Mykrobe-tools/mykrobe]. However, the method
+[mykrobe](https://github.com/Mykrobe-tools/mykrobe). However, the method
 is not specific to mykrobe and can be used more generally for any species.
 
 The method relies heavily on `Bifrost`. Unitigs are generated from a graph
@@ -22,7 +22,7 @@ a set of sequences that are unique to node in the tree, in FASTA format.
 ## Installation
 
 `sprog` is written in Python. It assumes
-[`Bifrost`][https://github.com/pmelsted/bifrost] is installed.
+[`Bifrost`](https://github.com/pmelsted/bifrost) is installed.
 
 Install by taking a copy of this repo and running:
 ```
@@ -31,8 +31,8 @@ python3 -m pip install .
 
 
 Optional dependencies:
-* [mash][https://github.com/marbl/Mash]
-* [fastANI][https://github.com/ParBLiSS/FastANI]
+* [mash](https://github.com/marbl/Mash)
+* [fastANI](https://github.com/ParBLiSS/FastANI)
 
 If `mash` and/or `fastANI` are installed, then you can use the `sprog` commands
 `mash_all`/`fatani_all` to run all genomes vs all genomes using these tools.
@@ -56,7 +56,7 @@ scripts because the memory and multi-cpu usage varies significantly
 between stages.
 
 
-Download data from [GTDB][https://gtdb.ecogenomic.org]
+Download data from [GTDB](https://gtdb.ecogenomic.org)
 (<100M RAM, a few minutes run time)
 
 ```
