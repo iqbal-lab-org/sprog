@@ -26,13 +26,18 @@ a set of sequences that are unique to node in the tree, in FASTA format.
 `sprog` is written in Python. It assumes `Bifrost` is installed and in your
 `$PATH`.
 
-Install `sporg` by taking a copy of this repo and running:
+Install `sprog` by taking a copy of this repo and running:
 ```
 python3 -m pip install .
 ```
 
 
 Optional dependencies:
+* [datasets](https://www.ncbi.nlm.nih.gov/datasets/docs/v2/reference-docs/command-line/datasets/) - this is the command line tool from NCBI. You can either provide
+  `sprog` with your own FASTA files, in which case `datasets` is not  required.
+  Alternatively, provide genbank or assembly accessions.
+  `datasets` is used to download assemblies (genbank sequences are downloaded
+  using `wget`)
 * [mash](https://github.com/marbl/Mash)
 * [fastANI](https://github.com/ParBLiSS/FastANI)
 
