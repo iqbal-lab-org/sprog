@@ -37,7 +37,7 @@ Optional dependencies:
 * [fastANI](https://github.com/ParBLiSS/FastANI)
 
 If `mash` and/or `fastANI` are installed, then you can use the `sprog` commands
-`mash_all`/`fatani_all` to run all genomes vs all genomes using these tools.
+`mash_all`/`fastani_all` to run all genomes vs all genomes using these tools.
 This is not required to build probes, but may be useful for sanity checking.
 It can help identify species where a genome has a better match to a
 different species.
