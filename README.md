@@ -41,14 +41,14 @@ It can help identify species where a genome has a better match to a
 different species.
 
 
-## Usage
+## Usage
 
 This section is under construction.
 
 For generating mykrobe probes, please see the section below.
 
 
-## Synopsis for making mykrobe probes
+## Synopsis for making mykrobe probes
 
 The following commands can be used to make mykrobe species probes for
 use with `mykrobe predict` and species `tb`. It is split over several
