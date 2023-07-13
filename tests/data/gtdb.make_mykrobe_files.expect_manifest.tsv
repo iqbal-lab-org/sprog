@@ -1,0 +1,9 @@
+sample	species	data_source	accession	file
+GCA_11	Mycobacterium chelonae subsp. chelonae	download	GCA_11	.
+GCA_10	Mycobacterium chelonae subsp. gwanakae	download	GCA_10	.
+GCA_1	Mycobacterium tuberculosis	download	GCA_1	.
+GCA_2	Mycobacterium tuberculosis	download	GCA_2	.
+GCA_4	Mycobacterium tuberculosis variant africanum	download	GCA_4	.
+GCA_6	Mycobacterium bovis	download	GCA_6	.
+GCA_7	Mycobacterium xenopi	download	GCA_7	.
+GCA_8	Mycobacterium xenopi	download	GCA_8	.

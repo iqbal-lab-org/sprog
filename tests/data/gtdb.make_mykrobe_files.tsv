@@ -1,0 +1,12 @@
+accession	gtdb_taxonomy	gtdb_representative	gtdb_type_designation_ncbi_taxa	ncbi_genbank_assembly_accession	ncbi_organism_name
+acc1	g__Mycobacterium;s__Mycobacterium tuberculosis	t	type strain of species	GCA_1	Mycobacterium tuberculosis
+acc2	g__Mycobacterium;s__Mycobacterium tuberculosis	f	non type material	GCA_2	Mycobacterium tuberculosis
+acc3	g__Mycobacterium;s__Mycobacterium tuberculosis	f	non type material	GCA_3	Mycobacterium tuberculosis
+acc4	g__Mycobacterium;s__Mycobacterium tuberculosis	f	non type material	GCA_4	Mycobacterium tuberculosis variant africanum foo
+acc5	g__Mycobacterium;s__Mycobacterium tuberculosis	f	non type material	GCA_5	Mycobacterium tuberculosis subsp. tuberculosis
+acc6	g__Mycobacterium;s__Mycobacterium tuberculosis	f	non type material	GCA_6	Mycobacterium tuberculosis variant bovis
+acc7	g__Mycobacterium;s__Mycobacterium xenopi	t	type strain of species	GCA_7	Mycobacterium xenopi
+acc8	g__Mycobacterium;s__Mycobacterium xenopi	f	not type material	GCA_8	Mycobacterium xenopi foo
+acc9	g__Mycobacterium;s__Mycobacterium xenopi	f	not type material	GCA_9	Mycobacterium xenopi bar baz
+acc10	g__Mycobacterium;s__Mycobacterium chelonae	t	type strain of subspecies	GCA_10	[Mycobacterium] chelonae subsp. gwanakae
+acc11	g__Mycobacterium;s__Mycobacterium chelonae	f	type strain of species	GCA_11	[Mycobacterium] chelonae subsp. chelonae

@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sprog"
+version = "0.0.1"
+description = "Species probes generator"
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3 :: Only",
+    "Development Status :: 4 - Beta",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = [
+    "anytree >= 2.8.0",
+    "bitarray",
+    "matplotlib",
+    "newick >= 1.9.0",
+    "pyfastaq",
+]
+
+
+[project.scripts]
+sprog = "sprog.__main__:main"
+
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+isolated_build = True
+envlist = py3
+
+[testenv]
+deps = pytest
+commands = pytest {posargs}
+"""
