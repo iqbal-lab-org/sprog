@@ -105,3 +105,22 @@ def test_sample_symlink_genome(hiv_genome_fasta):
     assert os.path.exists(smpl.genome_fasta)
     smpl.obtain_genome()
     utils.syscall(f"rm -r {sample_dir}")
+
+
+def test_simulate_perfect_reads(hiv_genome_fasta):
+    sample_dir = "tmp.sample.sim_perfect_reads"
+    reads_outprefix = "tmp.sample.sim_perfect_reads.reads"
+    utils.syscall(f"rm -rf {sample_dir} {reads_outprefix}*")
+    smpl = sample.Sample(
+        sample_dir,
+        name="test_sample",
+        data_source="symlink",
+        accession=None,
+        original_file=hiv_genome_fasta,
+        species="hiv",
+        debug=True,
+    )
+    smpl.simulate_perfect_reads(reads_outprefix, length=50, depth=1)
+    assert os.path.exists(f"{reads_outprefix}_1.fq.gz")
+    assert os.path.exists(f"{reads_outprefix}_2.fq.gz")
+    utils.syscall(f"rm -r {sample_dir} {reads_outprefix}*")

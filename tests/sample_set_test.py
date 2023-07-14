@@ -174,4 +174,11 @@ def test_sample_set():
             # the right number of them
             assert len(matches) == len(expect[d["Node"]])
 
+    # ---------------- simulate perfect reads ----------------------------------
+    reads_outdir = os.path.join(outdir, "sim_reads")
+    samples.simulate_perfect_reads(reads_outdir, length=30, frag_length=100, depth=1)
+    for sample_name in samples.samples:
+        p = os.path.join(reads_outdir, sample_name)
+        assert os.path.exists(f"{p}_1.fq.gz")
+        assert os.path.exists(f"{p}_2.fq.gz")
     utils.syscall(f"rm -r {outdir}")

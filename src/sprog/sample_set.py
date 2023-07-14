@@ -481,3 +481,17 @@ class SampleSet:
                         file=f,
                     )
         f.close()
+
+    def simulate_perfect_reads(
+        self, outdir, length=150, frag_length=400, depth=10, force=False
+    ):
+        if force:
+            utils.syscall(f"rm -rf {outdir}")
+        os.mkdir(outdir)
+        for sample_name, this_sample in self.samples.items():
+            this_sample.simulate_perfect_reads(
+                os.path.join(outdir, sample_name),
+                length=length,
+                frag_length=frag_length,
+                depth=depth,
+            )
