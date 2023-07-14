@@ -6,6 +6,7 @@ __all__ = [
     "mash_all",
     "mykrobe_from_gtdb",
     "per_sample_presence",
+    "sim_perfect_reads",
 ]
 
 from sprog.tasks import *

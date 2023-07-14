@@ -165,6 +165,38 @@ def main(args=None):
     )
     subparser_mykrobe_from_gtdb.set_defaults(func=sprog.tasks.mykrobe_from_gtdb.run)
 
+    # ---------------------- sim_perfect_reads --------------------------------
+    subparser_sim_perfect_reads = subparsers.add_parser(
+        "sim_perfect_reads",
+        parents=[common_parser, samples_dir_parser, force_parser],
+        help="Simulate Illumina reads with zero errors from each genome",
+        usage="sprog sim_perfect_reads [options] <outdir>",
+        description="Simulate Illumina reads with zero errors from each genome",
+    )
+    subparser_sim_perfect_reads.add_argument("outdir", help="Output directory")
+    subparser_sim_perfect_reads.add_argument(
+        "--read_length",
+        type=int,
+        help="Read length [%(default)s]",
+        default=150,
+        metavar="INT",
+    )
+    subparser_sim_perfect_reads.add_argument(
+        "--frag_length",
+        type=int,
+        help="Fragment length [%(default)s]",
+        default=400,
+        metavar="INT",
+    )
+    subparser_sim_perfect_reads.add_argument(
+        "--depth",
+        type=int,
+        help="Mean read depth [%(default)s]",
+        default=10,
+        metavar="INT",
+    )
+    subparser_sim_perfect_reads.set_defaults(func=sprog.tasks.sim_perfect_reads.run)
+
     args = parser.parse_args()
     if not hasattr(args, "func"):
         parser.print_help()

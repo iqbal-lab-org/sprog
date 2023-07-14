@@ -84,3 +84,8 @@ class Sample:
 
     def has_genome(self):
         return self.metadata["genome_obtained"]
+
+    def simulate_perfect_reads(self, outprefix, length=150, frag_length=400, depth=10):
+        assert self.has_genome()
+        command = f"fastaq to_perfect_reads {self.genome_fasta} - {frag_length} 1 {depth} {length} | fastaq deinterleave - {outprefix}_1.fq.gz {outprefix}_2.fq.gz"
+        utils.syscall(command)
