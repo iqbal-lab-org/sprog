@@ -115,6 +115,7 @@ def species_dict_to_manifest_lines(gtdb_species, gtdb_d, genomes_per_species=2):
     gtdb_reps = [x for x in samples if x["gtdb_representative"] == "t"]
     assert len(gtdb_reps) == 1
     gtdb_rep = gtdb_reps[0]
+    gb_accessions = {}
 
     type_strains = [
         x
@@ -179,6 +180,10 @@ def species_dict_to_manifest_lines(gtdb_species, gtdb_d, genomes_per_species=2):
                 species = f"{gtdb_species} subsp. {subspecies_name}"
                 tree_lines.add(f"{sub_ntm_complex}\t{gtdb_species}\t{species}")
 
+            gb_accessions[species] = {
+                "for_probes": [record_to_use["ncbi_genbank_assembly_accession"]],
+                "non_probes": [],
+            }
             lines_out.append(gtdb_dict_to_manifest_line(record_to_use, species))
             species_aliases[name.replace(" ", "_")] = subspecies[name]["ncbi_names"]
 
@@ -192,6 +197,16 @@ def species_dict_to_manifest_lines(gtdb_species, gtdb_d, genomes_per_species=2):
                 )
                 if new_lines is not None:
                     lines_out.extend(new_lines)
+                    gb_accessions[species]["for_probes"].extend(
+                        [x.split("\t")[0] for x in new_lines]
+                    )
+
+            gb_accessions[species]["non_probes"] = [
+                x["ncbi_genbank_assembly_accession"]
+                for x in d["type"] + d["non_type"]
+                if x["ncbi_genbank_assembly_accession"]
+                not in gb_accessions[species]["for_probes"]
+            ]
 
     else:
         ncbi_names = [
@@ -203,6 +218,10 @@ def species_dict_to_manifest_lines(gtdb_species, gtdb_d, genomes_per_species=2):
             )
         }
         lines_out.append(gtdb_dict_to_manifest_line(gtdb_rep, gtdb_species))
+        gb_accessions[gtdb_species] = {"for_probes": [], "non_probes": []}
+        gb_accessions[gtdb_species]["for_probes"].append(
+            gtdb_rep["ncbi_genbank_assembly_accession"]
+        )
         if genomes_per_species > 1:
             non_reps = [x for x in samples if x["gtdb_representative"] != "t"]
             new_lines = gtdb_dict_list_to_sampled_manifest_lines(
@@ -210,25 +229,43 @@ def species_dict_to_manifest_lines(gtdb_species, gtdb_d, genomes_per_species=2):
             )
             if new_lines is not None:
                 lines_out.extend(new_lines)
+                gb_accessions[gtdb_species]["for_probes"].extend(
+                    [x.split("\t")[0] for x in new_lines]
+                )
         tree_lines.add(f"{sub_ntm_complex}\t{gtdb_species}")
+        gb_accessions[gtdb_species]["non_probes"] = [
+            x["ncbi_genbank_assembly_accession"]
+            for x in samples
+            if x["ncbi_genbank_assembly_accession"]
+            not in gb_accessions[gtdb_species]["for_probes"]
+        ]
 
-    return lines_out, tree_lines, species_aliases
+    return lines_out, tree_lines, species_aliases, gb_accessions
 
 
 def write_manifest_and_tree_tsv_and_ncbi_json(
-    species, manifest_tsv, tree_tsv, ncbi_json, genomes_per_species=2
+    species, manifest_tsv, tree_tsv, ncbi_json, gb_json, genomes_per_species=2
 ):
     tree_lines = set()
     species_aliases = {}
+    genbank_accessions = {}
+
     with open(manifest_tsv, "w") as f:
         print("sample", "species", "data_source", "accession", "file", sep="\t", file=f)
         for gtdb_species, gtdb_d in sorted(species.items()):
-            tsv_lines, new_tree_lines, aliases = species_dict_to_manifest_lines(
+            (
+                tsv_lines,
+                new_tree_lines,
+                aliases,
+                new_gb_acc,
+            ) = species_dict_to_manifest_lines(
                 gtdb_species, gtdb_d, genomes_per_species=genomes_per_species
             )
             if len(tsv_lines) > 0:
                 print(*tsv_lines, sep="\n", file=f)
                 species_aliases.update(aliases)
+                genbank_accessions.update(new_gb_acc)
+
             tree_lines.update(new_tree_lines)
 
     with open(tree_tsv, "w") as f:
@@ -236,6 +273,7 @@ def write_manifest_and_tree_tsv_and_ncbi_json(
         print(*tree_lines, sep="\n", file=f)
 
     utils.write_json(species_aliases, ncbi_json)
+    utils.write_json(genbank_accessions, gb_json)
 
 
 def make_mykrobe_files(outdir, gtdb_tsv=None, genomes_per_species=2):
@@ -248,11 +286,13 @@ def make_mykrobe_files(outdir, gtdb_tsv=None, genomes_per_species=2):
     manifest_tsv = os.path.join(outdir, "manifest.tsv")
     tree_tsv = os.path.join(outdir, "tree.tsv")
     ncbi_json = os.path.join(outdir, "ncbi_names.json")
+    gb_json = os.path.join(outdir, "genbank_accessions.json")
     write_manifest_and_tree_tsv_and_ncbi_json(
         species,
         manifest_tsv,
         tree_tsv,
         ncbi_json,
+        gb_json,
         genomes_per_species=genomes_per_species,
     )
     logging.info(f"Manifest file for input to get_data: {manifest_tsv}")
