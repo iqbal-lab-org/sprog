@@ -1,5 +1,6 @@
 import csv
 from collections import Counter
+import gzip
 import logging
 from operator import itemgetter
 import os
@@ -10,23 +11,17 @@ from sprog import utils
 
 
 MYCO_SP_REGEX = re.compile("Mycobacterium sp[0-9]+")
-GTDB_VERSION = "214"
-GTDB_TSV_URL = f"https://data.gtdb.ecogenomic.org/releases/release{GTDB_VERSION}/{GTDB_VERSION}.0/bac120_metadata_r{GTDB_VERSION}.tar.gz"
+GTDB_VERSION = "220"
+GTDB_TSV_GZ = f"bac120_metadata_r{GTDB_VERSION}.tsv.gz"
+GTDB_TSV_URL = f"https://data.gtdb.ecogenomic.org/releases/release{GTDB_VERSION}/{GTDB_VERSION}.0/{GTDB_TSV_GZ}"
 MTB_VARIANTS = {"africanum", "caprae", "microti", "pinnipedii"}
 
 
 def get_gtdb_tsv(outdir):
-    # The tsv file is downloaded as a tar.gz archive. When you extract, it
-    # just extracts the single TSV to cwd.
     logging.info(f"Download GTDB TSV file release version {GTDB_VERSION}")
     utils.syscall(f"wget -q {GTDB_TSV_URL}", cwd=outdir)
-    tar_gz = os.path.basename(GTDB_TSV_URL)
-    extracted_tsv = tar_gz.replace(".tar.gz", ".tsv")
-    logging.info("Extract TSV from downloaded tar archive")
-    utils.syscall(f"tar xf {tar_gz}", cwd=outdir)
-    logging.info(f"Finished getting GTDB TSV file {extracted_tsv}")
-    os.unlink(os.path.join(outdir, tar_gz))
-    return os.path.join(outdir, extracted_tsv)
+    logging.info(f"Finished getting GTDB TSV file {GTDB_TSV_GZ}")
+    return os.path.join(outdir, GTDB_TSV_GZ)
 
 
 def taxon_to_species(taxon):
@@ -54,7 +49,8 @@ def load_gtdb_tsv(gtdb_tsv):
         "ncbi_genbank_assembly_accession",
         "ncbi_organism_name",
     ]
-    with open(gtdb_tsv) as f:
+    fopen = gzip.open if gtdb_tsv.endswith(".gz") else open
+    with fopen(gtdb_tsv, "rt") as f:
         for count, d in enumerate(csv.DictReader(f, delimiter="\t")):
             if count > 0 and count % 100_000 == 0:
                 logging.info(f" ... parsed {count} lines of TSV file")
@@ -278,9 +274,9 @@ def write_manifest_and_tree_tsv_and_ncbi_json(
 
 def make_mykrobe_files(outdir, gtdb_tsv=None, genomes_per_species=2):
     os.mkdir(outdir)
+    #gtdb_tsv = f"{outdir}/{GTDB_TSV_GZ}"
     if gtdb_tsv is None:
         gtdb_tsv = get_gtdb_tsv(outdir)
-    # gtdb_tsv = f"{outdir}/bac120_metadata_r214.tsv"
     species = load_gtdb_tsv(gtdb_tsv)
     logging.info("Generating manifest and tree TSV files from GTDB data")
     manifest_tsv = os.path.join(outdir, "manifest.tsv")
